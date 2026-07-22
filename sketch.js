@@ -68,6 +68,55 @@ let apiBase = isLocalPage && window.location.port !== API_PORT
 const CONTRIBUTION_COLORS = ["#ffd6e0", "#d9f2d0", "#cfe8ff", "#ffe7b8", "#e4d7ff", "#ccefe8"];
 const BOOK4_PAGE_PROMPT = "who are you without your problems?";
 const BOOK5_LINE_PREFIX = "All is ";
+// These are the starting pages shown on GitHub Pages. They were exported from
+// the local SQLite database so the public site does not need a Python server.
+const DEFAULT_BOOK_PAGES = {
+  "1": [[
+    { text: "this is my doy,", contributionId: "contribution-1783983412372-zali74", color: "#ffe7b8" },
+    { text: "i sow someone i hete on the street todey", contributionId: "contribution-1783983412372-zali74", color: "#ffe7b8" },
+    { text: "which mekes me hote myself even more", contributionId: "contribution-1783983412372-zali74", color: "#ffe7b8" },
+    { text: "those deys pussed by ", contributionId: "contribution-1783983442150-0pf9bl", color: "#ffd6e0" },
+    { text: "like euting i cotton condy in e derk room ill olone", contributionId: "contribution-1783983484023-shup1k", color: "#e4d7ff" }
+  ]],
+  "2": [[
+    { text: "ssso whatttt arrre you tttrrying tttto sssay?", contributionId: "contribution-1783983520771-999x15", color: "#e4d7ff" },
+    { text: "i'm nottt ggggonna hear itttt", contributionId: "contribution-1783983539639-1mgrxl", color: "#d9f2d0" },
+    { text: "rrrememberrrr tto brreatttthe bbbbefffforrre you spppeak", contributionId: "contribution-1783983600116-npqthu", color: "#ccefe8" }
+  ]],
+  "3": [[
+    { text: "morning!!!!", contributionId: "contribution-1783983733552-3pffny", color: "#ffd6e0" },
+    { text: "it's 6 am ", contributionId: "contribution-1783983733552-3pffny", color: "#ffd6e0" },
+    { text: "getting myself a 5 cups of cofffee", contributionId: "contribution-1783983733552-3pffny", color: "#ffd6e0" },
+    { text: "then i woke up again", contributionId: "contribution-1783983733552-3pffny", color: "#ffd6e0" },
+    { text: "i never wake up at 6 am", contributionId: "contribution-1783983733552-3pffny", color: "#ffd6e0" },
+    { text: "that's bullshit", contributionId: "contribution-1783983733552-3pffny", color: "#ffd6e0" },
+    { text: "do i have to go to work today?", contributionId: "contribution-1783983733552-3pffny", color: "#ffd6e0" },
+    { text: "but then, i woke up", contributionId: "contribution-1783983733552-3pffny", color: "#ffd6e0" },
+    { text: "so it's another dream", contributionId: "contribution-1783983767094-4dqlsb", color: "#cfe8ff" },
+    { text: "i'm still lying on the kitchen floor", contributionId: "contribution-1783983821202-gre6d0", color: "#cfe8ff" },
+    { text: "after 5 cups of coffee", contributionId: "contribution-1783983821202-gre6d0", color: "#cfe8ff" },
+    { text: "at 3:40 am", contributionId: "contribution-1783983821202-gre6d0", color: "#cfe8ff" },
+    { text: "then i woke up again", contributionId: "contribution-1783983821202-gre6d0", color: "#cfe8ff" },
+    { text: "that shit happens again", contributionId: "contribution-1783983836748-uxcbwo", color: "#ffe7b8" }
+  ]],
+  "4": [[
+    { text: "who are you without your problems?", contributionId: "book-4-prompt", color: null },
+    { text: "an owl", contributionId: "contribution-1783983867672-4hlgn8", color: "#ffd6e0" },
+    { text: "a noon owl", contributionId: "contribution-1783983889112-rijwk6", color: "#ffe7b8" },
+    { text: "who are you without your problems?", contributionId: "contribution-1783983889112-rijwk6", color: "#ffe7b8" },
+    { text: "i am the problem", contributionId: "contribution-1783983931513-uxwjhb", color: "#ccefe8" },
+    { text: "who are you without your problems?", contributionId: "contribution-1783983931513-uxwjhb", color: "#ccefe8" },
+    { text: "but no one knows about it", contributionId: "contribution-1783983931513-uxwjhb", color: "#ccefe8" }
+  ]],
+  "5": [[
+    { text: "All is burning", contributionId: "contribution-1783983989485-yi5xvi", color: "#e4d7ff" },
+    { text: "All is falling", contributionId: "contribution-1783983989485-yi5xvi", color: "#e4d7ff" },
+    { text: "All is changing", contributionId: "contribution-1783983989485-yi5xvi", color: "#e4d7ff" },
+    { text: "All is flipping pages", contributionId: "contribution-1783983989485-yi5xvi", color: "#e4d7ff" },
+    { text: "All is all", contributionId: "contribution-1783983989485-yi5xvi", color: "#e4d7ff" },
+    { text: "All is crafted", contributionId: "contribution-1783984046145-7alhtx", color: "#e4d7ff" }
+  ]]
+};
 const INTRO_LINES = [
   "How does poetry survive, transform, and mutate in a world saturated with distractions and noise?",
   "Fill these empty pages with your own words.",
@@ -128,6 +177,10 @@ function normalizePages(data) {
   }
 
   return paginatedPages.length > 0 ? paginatedPages : [[]];
+}
+
+function defaultPagesForBook(bookId) {
+  return normalizePages(JSON.parse(JSON.stringify(DEFAULT_BOOK_PAGES[bookId] || [[]])));
 }
 
 function getTypedLines() {
@@ -699,6 +752,7 @@ function setViewMode(mode, shouldResize = true) {
 
 function saveBookData(bookId, pages) {
   localStorage.setItem("myCanvasText_" + bookId, JSON.stringify(pages));
+  if (!isLocalPage) return;
   fetch(apiBase + "/api/books/" + encodeURIComponent(bookId), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -709,6 +763,7 @@ function saveBookData(bookId, pages) {
 }
 
 async function loadBookData(bookId) {
+  if (!isLocalPage) return;
   try {
     let response = await fetch(apiBase + "/api/books/" + encodeURIComponent(bookId));
     if (!response.ok) return;
@@ -1030,7 +1085,7 @@ function setup() {
         showSavedLines();
         myInput.innerText = "";
       } else {
-        allPages = [[]];
+        allPages = defaultPagesForBook(activeBook);
         ensurePageStarter();
         savedLines = allPages[currentPageIndex];
         lockedLayer.innerText = "";
