@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="p5.js"></script>
+    <script src="p5.sound.min.js"></script>
+    
+    
+    
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+
+  </head>
+  <body>
+    <main>
+      <div class="writing-space">
+        <div data-book ="1" class="folder" > 
+          <span class="circle"></span> 
+          <span class="circle-2"></span> 
+          <p class="title rotate-right">a diary without "a"</p>
+        </div>
+        <div data-book ="2" class="folder"  >
+          <span class="circle"></span> 
+          <span class="circle-2 "></span> 
+          <p class="title ">things make you stutter</p>
+        </div>
+        <div data-book ="3" class="folder move-top" > 
+          <span class="circle"></span> 
+          <span class="circle-2"></span> 
+          <p class="title">dream loop</p>
+        </div>
+        <div data-book ="4" class="folder" > 
+          <span class="circle"></span> 
+          <span class="circle-2"></span> 
+          <p class="title rotate-right">without problems</p>
+        </div>
+        <div data-book ="5" class="folder" > 
+          <span class="circle"></span> 
+          <span class="circle-2"></span> 
+          <p class="title">All is all</p>
+        </div>
+        
+        <div class="folder-open">
+          <p class="top">colab space</p>
+          <div class = "buttons">
+            <button id="save-line" type="button">add to page</button>
+            <div class="page-controls">
+              <button id="prev-page" type="button" aria-label="Previous page">&lt;</button>
+              <span id = "page-indicator">Page 1</span>
+              <button id="next-page" type="button" aria-label="Next page">&gt;</button>
+            </div>
+          </div>
+          <div class="TextInput">
+            <div id="locked-text-layer" contenteditable="false"></div>
+            <div id ="editable-text-layer" contenteditable="true" data-placeholder="write your lines" style="outline: none;"></div>
+          </div>
+        </div>
+    
+          
+
+        </div>
+      </div>
+      <div id="canvas-holder"></div>
+      <div class="container">
+        <div class="control-group">
+          <div class="controls-panel">
+            <div id="slider-control">
+            <div class="low-value">
+              <label class="group-toggle">
+                <span class="group-toggle-title">bass</span>
+                <input type="checkbox" id="low-group-switch" checked>
+                <span class="toggle-options">
+                  <span class="toggle-label off-label">off</span>
+                  <span class="toggle-label on-label">on</span>
+                </span>
+              </label>
+              <div class="variable-slider">
+                <p>thunder</p>
+                <div class="slider-range">
+                  <div class="slider-track"></div>
+                  <input id="variable-start" type="range" value="50" min="0" max="255"/>
+                  <input id="variable-end" type="range" value="255" min="0" max="255"/>
+                </div>
+                <label class="effect-toggle"><input type="checkbox" id="weight-switch" checked><span></span></label>
+              </div>
+              <div class="opacity-slider">
+                <p>rain</p>
+                <div class="slider-range">
+                  <div class="slider-track"></div>
+                  <input id="opa-start" type="range" value="0" min="0" max="255"/>
+                  <input id="opa-end" type="range" value="255" min="0" max="255"/>
+                </div>
+                <label class="effect-toggle"><input type="checkbox" id="opacity-switch"><span></span></label>
+              </div>
+            </div>
+
+            <div class="mid-value">
+              <label class="group-toggle">
+                <span class="group-toggle-title">voices</span>
+                <input type="checkbox" id="mid-group-switch" checked>
+                <span class="toggle-options">
+                  <span class="toggle-label off-label">off</span>
+                  <span class="toggle-label on-label">on</span>
+                </span>
+              </label>
+              <div class="size-slider">
+                <p>chaos</p>
+                <div class="slider-range">
+                  <div class="slider-track"></div>
+                  <input id="size-start" type="range" value="0" min="0" max="255"/>
+                  <input id="size-end" type="range" value="255" min="0" max="255"/>
+                </div>
+                <label class="effect-toggle"><input type="checkbox" id="size-switch" checked><span></span></label>
+              </div>
+              <div class="elavate-slider">
+                <p>jump</p>
+                <div class="slider-range">
+                  <div class="slider-track"></div>
+                  <input id="elavate-start" type="range" value="0" min="0" max="255"/>
+                  <input id="elavate-end" type="range" value="255" min="0" max="255"/>
+                </div>
+                <label class="effect-toggle"><input type="checkbox" id="elavate-switch"><span></span></label>
+              </div>
+            </div>
+     
+            <div class="treble-value">
+              <label class="group-toggle">
+                <span class="group-toggle-title">treble</span>
+                <input type="checkbox" id="treble-group-switch" checked>
+                <span class="toggle-options">
+                  <span class="toggle-label off-label">off</span>
+                  <span class="toggle-label on-label">on</span>
+                </span>
+              </label>
+              <div class="rotate-slider">
+                <p>wind</p>
+                <div class="slider-range">
+                  <div class="slider-track"></div>
+                  <input id="rotate-start" type="range" value="80" min="0" max="255"/>
+                  <input id="rotate-end" type="range" value="255" min="0" max="255"/>
+                </div>
+                <label class="effect-toggle"><input type="checkbox" id="rotate-switch" checked><span></span></label>
+              </div>
+              <div class="spacing-slider">
+                <p>distance</p>
+                <div class="slider-range">
+                  <div class="slider-track"></div>
+                  <input id="spacing-start" type="range" value="0" min="0" max="255"/>
+                  <input id="spacing-end" type="range" value="100" min="0" max="255"/>
+                </div>
+                <label class="effect-toggle"><input type="checkbox" id="spacing-switch"><span></span></label>
+              </div>
+            </div>
+          </div>
+          
+          <div id="font-box">
+            <label for="font-uploader"> Upload your font</label>
+            <input type="file" id="font-uploader" accept=".ttf, .otf, .woff, .woff2">
+          </div>
+          <div id="paper-box">
+            <div class="paper-control">
+              <p>paper color</p>
+              <div class="paper-color-options">
+                <button class="paper-color-button is-active" data-paper-color="#f9f1f1" type="button" aria-label="light yellow paper"></button>
+                <button class="paper-color-button" data-paper-color="#f1f7f9" type="button" aria-label="light blue paper"></button>
+                <button class="paper-color-button" data-paper-color="#ebf4f0" type="button" aria-label="light green paper"></button>
+                <button class="paper-color-button" data-paper-color="#f8f1f9" type="button" aria-label="light red paper"></button>
+                <button class="paper-color-button" data-paper-color="#fbf9e4" type="button" aria-label="white paper"></button>
+
+              </div>
+            </div>
+            <div class="paper-control">
+              <p>text position</p>
+              <div class="paper-align-options">
+                <button class="paper-align-button is-active" data-text-position="top" type="button">top</button>
+                <button class="paper-align-button" data-text-position="middle" type="button">middle</button>
+                <button class="paper-align-button" data-text-position="bottom" type="button">bottom</button>
+              </div>
+            </div>
+            <div class="paper-control">
+              <p>view</p>
+              <div class="view-mode-options">
+                <button class="view-mode-button" data-view-mode="print" type="button">print</button>
+                <button class="view-mode-button is-active" data-view-mode="digital" type="button">digital</button>
+              </div>
+            </div>
+          </div>
+          <div id="export-box">
+            <button id="export-image" type="button">export image</button>
+            <button id="export-pdf" type="button">export pdf</button>
+            <button id="record-video" type="button">record video</button>
+            <p id="record-status"></p>
+          </div>
+        </div>
+      </div>
+        
+      </div>
+      
+      
+
+      
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/opentype.js/0.6.5/opentype.min.js" integrity="sha512-bRz6QInwm6Dnvgt0oVNbSjs0eyLXmAttb8t/jZWbBTTnUrs0O3HtNYE6pf3K0gO5RwUJZ50OzJcIiYi8lWj7EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="sketch.js"></script>
+  </body>
+</html>
