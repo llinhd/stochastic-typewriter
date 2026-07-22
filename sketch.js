@@ -50,7 +50,8 @@ let introActive = true;
 let savedLines;
 let writingPlaceholder = "start your work";
 let pageDrafts = {};
-let storedData = localStorage.getItem("myCanvasText_"+ activeBook);
+const STORAGE_KEY_PREFIX = "stochastic-typewriter-v2-";
+let storedData = localStorage.getItem(STORAGE_KEY_PREFIX + activeBook);
 let mediaRecorder;
 let recordedChunks = [];
 let recordingAudioStream;
@@ -751,7 +752,7 @@ function setViewMode(mode, shouldResize = true) {
 }
 
 function saveBookData(bookId, pages) {
-  localStorage.setItem("myCanvasText_" + bookId, JSON.stringify(pages));
+  localStorage.setItem(STORAGE_KEY_PREFIX + bookId, JSON.stringify(pages));
   if (!isLocalPage) return;
   fetch(apiBase + "/api/books/" + encodeURIComponent(bookId), {
     method: "POST",
@@ -773,7 +774,7 @@ async function loadBookData(bookId) {
     allPages = normalizePages(data.pages);
     ensurePageStarter();
     savedLines = allPages[currentPageIndex] || [];
-    localStorage.setItem("myCanvasText_" + bookId, JSON.stringify(allPages));
+    localStorage.setItem(STORAGE_KEY_PREFIX + bookId, JSON.stringify(allPages));
 
     if (lockedLayer && myInput) {
       showSavedLines();
@@ -1073,7 +1074,7 @@ function setup() {
       myInput.innerText = "";
       currentPageIndex = 0;
       //grab the stored text in each data-book and put it into the text-input
-      let folderData = localStorage.getItem("myCanvasText_" + activeBook);
+      let folderData = localStorage.getItem(STORAGE_KEY_PREFIX + activeBook);
       currentPageIndex = 0;
       if (folderData) {
         let parsed = JSON.parse(folderData);
